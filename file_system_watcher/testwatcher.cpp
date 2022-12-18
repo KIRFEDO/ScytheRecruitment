@@ -2,6 +2,9 @@
 #include <QDebug>
 #include <QDir>
 #include <QDirIterator>
+
+#include "catgenerator.h"
+
 TestWatcher::TestWatcher(QObject *parent)
     : QObject{parent}
 {
@@ -9,10 +12,6 @@ TestWatcher::TestWatcher(QObject *parent)
 
 void TestWatcher::startMonitoring(){
     generateAllPaths();
-    qDebug()<<"--------------------";
-    for(auto a : filePaths){
-        qDebug()<<a;
-    }
     folderWatcher = new QFileSystemWatcher(this);
     fileWatcher = new QFileSystemWatcher(this);
     for(const auto path : folderPaths){
@@ -54,6 +53,9 @@ void TestWatcher::folderEvent(const QString& path){
         for(auto fileInfo: oldFolderList){
             if(!currFolderList[path].contains(fileInfo)){
                 qDebug()<<"delete | "<<fileInfo.absoluteFilePath();
+                if(fileInfo.isFile()){
+                    gen.getCat(fileInfo);
+                }
             }
         }
     } else {

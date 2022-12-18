@@ -5,6 +5,7 @@
 #include <QFileSystemWatcher>
 #include <QFileInfoList>
 
+#include "catgenerator.h"
 #include "listwatchedpath.h"
 
 class TestWatcher : public QObject
@@ -31,6 +32,7 @@ private:
     QHash<QString, QFileInfoList> currFolderList;
     QVector<QString> folderPaths;
     QVector<QString> filePaths;
+    CatGenerator gen;
 
     void generateAllPaths();
     void generateFilePaths(QString path);

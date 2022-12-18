@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 9.0.0, 2022-12-18T14:14:02. -->
+<!-- Written by QtCreator 9.0.0, 2022-12-18T20:43:25. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -377,7 +377,10 @@
     <value type="bool" key="Analyzer.Valgrind.Settings.UseGlobalSettings">true</value>
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
-    <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
+    <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes">
+     <value type="QString">&lt;VARIABLE&gt;=&lt;VALUE&gt;</value>
+     <value type="QString">Path=C:\Qt\6.4.1\mingw_64\lib;C:\Qt\6.4.1\mingw_64\bin;C:\Qt\Tools\mingw1120_64\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\dotnet\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Docker\Docker\resources\bin;C:\Users\Кирилл\AppData\Local\Microsoft\WindowsApps;C:\msys64\mingw64\bin;C:\Users\Кирилл\AppData\Local\Programs\Microsoft VS Code\bin;;C:\Qt\Tools\Ninja;C:\Qt\Tools\OpenSSL\Win_x64\bin</value>
+    </valuelist>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">file_system_watcher</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.file_system_watcher</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">file_system_watcher</value>

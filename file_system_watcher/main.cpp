@@ -2,6 +2,8 @@
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
 #include <QQmlContext>
+#include <QDebug>
+#include <QSslSocket>
 
 #include <QLocale>
 #include <QTranslator>
@@ -9,6 +11,7 @@
 #include "listmodelwatchedpath.h"
 #include "listwatchedpath.h"
 #include "testwatcher.h"
+#include "catgenerator.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +19,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QGuiApplication app(argc, argv);
+
+    qInfo() << "SSL Support: "<<QSslSocket::supportsSsl();
+    qInfo() << "Compile Time: "<<QSslSocket::sslLibraryBuildVersionString();
 
     qmlRegisterType<ListModelWatchedPath>("FolderTracker", 1, 0, "LVModel");
     qmlRegisterType<ListWatchedPath>("FolderTracker", 1, 0, "LVwatchedPaths");
@@ -37,8 +43,6 @@ int main(int argc, char *argv[])
     folderWatcher.setItemsPtr(mPaths.getPathsPtr());
     engine.rootContext()->setContextProperty(QStringLiteral("folderWatcher"), &folderWatcher);
 
-
-
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
@@ -46,7 +50,6 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
-
 
     return app.exec();
 }
