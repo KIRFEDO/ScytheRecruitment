@@ -22,6 +22,8 @@ set(PROJECT_SOURCES
         listmodelwatchedpath.h
         testwatcher.cpp
         testwatcher.h
+        catgenerator.cpp
+        catgenerator.h
         qml.qrc
         ${TS_FILES}
 )

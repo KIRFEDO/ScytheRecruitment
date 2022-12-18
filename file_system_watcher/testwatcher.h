@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QFileSystemWatcher>
+#include <QFileInfoList>
 
 #include "listwatchedpath.h"
 
@@ -18,15 +19,22 @@ signals:
 
 public slots:
     void startMonitoring();
-//    void stopMonitoring();
+    void stopMonitoring();
 
 private slots:
-    void folderEvent(QString&);
-    void fileEvent(QString&);
-
+    void folderEvent(const QString&);
+    void fileEvent(const QString&);
 private:
     QVector<Item>* mPaths = nullptr;
-    QFileSystemWatcher* watcher;
+    QFileSystemWatcher* folderWatcher;
+    QFileSystemWatcher* fileWatcher;
+    QHash<QString, QFileInfoList> currFolderList;
+    QVector<QString> folderPaths;
+    QVector<QString> filePaths;
+
+    void generateAllPaths();
+    void generateFilePaths(QString path);
+    void addFolder(QString path);
 };
 
 #endif // TESTWATCHER_H

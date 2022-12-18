@@ -360,6 +360,9 @@ Window {
                     }
                     MouseArea{
                         anchors.fill: parent
+                        onClicked: {
+                            folderWatcher.stopMonitoring()
+                        }
                     }
                 }
             }
@@ -369,7 +372,6 @@ Window {
     FolderDialog {
         id: folderDialog
         currentFolder: ""
-        folder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
         onFolderChanged: {
             mPaths.appendItem(folder);
         }
