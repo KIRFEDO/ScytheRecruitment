@@ -1,8 +1,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlComponent>
+#include <QQmlContext>
 
 #include <QLocale>
 #include <QTranslator>
+
+#include "titlebarhandler.h"
 
 int main(int argc, char *argv[])
 {

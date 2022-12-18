@@ -17,6 +17,8 @@ set(TS_FILES file_system_watcher_en_150.ts)
 set(PROJECT_SOURCES
         main.cpp
         qml.qrc
+        titlebarhandler.cpp
+        titlebarhandler.h
         ${TS_FILES}
 )
 
