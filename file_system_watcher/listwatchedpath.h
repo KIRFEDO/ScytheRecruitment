@@ -29,6 +29,10 @@ public:
         return paths;
     }
 
+    QVector<Item>* getPathsPtr() {
+        return &paths;
+    }
+
 signals:
     void preItemAppended();
     void postItemAppended();

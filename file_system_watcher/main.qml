@@ -2,7 +2,10 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.2
+import QtQuick.Dialogs
+import Qt.labs.platform
 import FolderTracker 1.0
+
 Window {
     id:appWindow
     width: 700
@@ -205,16 +208,19 @@ Window {
                         text: "Add"
                         font.pixelSize: 20
                         anchors.centerIn: parent
-                        MouseArea{
-                            anchors.fill: parent
-                            onClicked: {
+                    }
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+                            if(folderPath.text){
                                 mPaths.appendItem(folderPath.text)
+                            } else {
+                                folderDialog.open()
                             }
                         }
                     }
                 }
             }
-
             Rectangle{
                 id: rectangleWatchedPaths
                 width: parent.width
@@ -243,7 +249,6 @@ Window {
                         }
 
                         delegate: RowLayout{
-                            property int id: model.id
                             width: listViewWrap.width
                             height: 20
                             Rectangle{
@@ -292,6 +297,81 @@ Window {
                     anchors.top: listViewWrap.top
                 }
             }
+            Rectangle {
+                id: controlButtons
+                width: parent.width
+                height: 30
+                color:"transparent"
+                anchors.top:rectangleWatchedPaths.bottom
+                anchors.topMargin: 40
+                Rectangle{
+                    id: btnClear
+                    width: 100
+                    height: parent.height
+                    color: "transparent"
+                    border.width: 1
+                    border.color: "black"
+                    radius: 10
+                    Label{
+                        anchors.centerIn: parent
+                        text: "Clear"
+                        font.pixelSize: 20
+                    }
+                    MouseArea{
+                        anchors.fill: parent
+                    }
+                }
+                Rectangle{
+                    id: btnStart
+                    width: 100
+                    height: parent.height
+                    color: "transparent"
+                    border.width: 1
+                    border.color: "black"
+                    radius: 10
+                    anchors.left: btnClear.right
+                    anchors.leftMargin:50
+                    Label{
+                        anchors.centerIn: parent
+                        text: "Start"
+                        font.pixelSize: 20
+                    }
+                    MouseArea{
+                        anchors.fill: parent
+                        onClicked: {
+                            folderWatcher.startMonitoring()
+                        }
+                    }
+                }
+                Rectangle{
+                    id: btnStop
+                    width: 100
+                    height: parent.height
+                    color: "transparent"
+                    border.width: 1
+                    border.color: "black"
+                    radius: 10
+                    anchors.left: btnStart.right
+                    anchors.leftMargin:50
+                    Label{
+                        anchors.centerIn: parent
+                        text: "Stop"
+                        font.pixelSize: 20
+                    }
+                    MouseArea{
+                        anchors.fill: parent
+                    }
+                }
+            }
+        }
+    }
+
+    FolderDialog {
+        id: folderDialog
+        currentFolder: ""
+        folder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
+        onFolderChanged: {
+            mPaths.appendItem(folder);
         }
     }
 }

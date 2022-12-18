@@ -8,6 +8,7 @@
 
 #include "listmodelwatchedpath.h"
 #include "listwatchedpath.h"
+#include "testwatcher.h"
 
 int main(int argc, char *argv[])
 {
@@ -32,6 +33,11 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     ListWatchedPath mPaths;
     engine.rootContext()->setContextProperty(QStringLiteral("mPaths"), &mPaths);
+    TestWatcher folderWatcher;
+    folderWatcher.setItemsPtr(mPaths.getPathsPtr());
+    engine.rootContext()->setContextProperty(QStringLiteral("folderWatcher"), &folderWatcher);
+
+
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

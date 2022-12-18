@@ -20,6 +20,8 @@ set(PROJECT_SOURCES
         listwatchedpath.h
         listmodelwatchedpath.cpp
         listmodelwatchedpath.h
+        testwatcher.cpp
+        testwatcher.h
         qml.qrc
         ${TS_FILES}
 )

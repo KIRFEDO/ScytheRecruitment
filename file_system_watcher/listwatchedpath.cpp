@@ -8,7 +8,8 @@ ListWatchedPath::ListWatchedPath(QObject *parent)
 
 void ListWatchedPath::appendItem(QString path){
     emit preItemAppended();
-    paths.append(*(new Item(paths.size(), path, uniqueId++)));
+    QString pathModified = path.left(4)=="file" ? path.right(path.length()-8) : path;
+    paths.append(*(new Item(paths.size(), pathModified, uniqueId++)));
     idMap[uniqueId-1]=paths.size()-1;
     emit postItemAppended();
 }

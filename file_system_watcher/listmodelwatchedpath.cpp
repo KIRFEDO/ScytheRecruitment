@@ -30,6 +30,7 @@ QVariant ListModelWatchedPath::data(const QModelIndex &index, int role) const
 
 bool ListModelWatchedPath::setData(const QModelIndex &index, const QVariant &value, int role)
 {
+   return false;
 }
 
 Qt::ItemFlags ListModelWatchedPath::flags(const QModelIndex &index) const
