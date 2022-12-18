@@ -16,9 +16,11 @@ set(TS_FILES file_system_watcher_en_150.ts)
 
 set(PROJECT_SOURCES
         main.cpp
+        listwatchedpath.cpp
+        listwatchedpath.h
+        listmodelwatchedpath.cpp
+        listmodelwatchedpath.h
         qml.qrc
-        titlebarhandler.cpp
-        titlebarhandler.h
         ${TS_FILES}
 )
 

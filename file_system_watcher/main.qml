@@ -1,8 +1,8 @@
 import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.0
-import TitleBarHandlerPKG 1.0
-
+import QtQuick.Layouts 1.2
+import FolderTracker 1.0
 Window {
     id:appWindow
     width: 700
@@ -11,22 +11,19 @@ Window {
     title: qsTr("File System Watcher")
     flags: Qt.Window | Qt.FramelessWindowHint
     color: "transparent"
-    property int buffX: ({})
-    property int buffY: ({})
-    property bool isFullscreen: False
-    TitleBarHandler{
-        id: titleBarHandler
-    }
+    property int buffX
+    property int buffY
+    property bool isFullscreen: false
+
 
     Rectangle{
         width: parent.width
         height: parent.height
-        border.color: black
+        border.color: "black"
         border.width: 1
-        radius: 10
+        radius: 10   
         Rectangle {
             id : windowTitle
-            objectName: windowTitle
             width: parent.width
             height: 30
             border.width: 1
@@ -139,20 +136,161 @@ Window {
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 2
                         autoTransform: true
-                        MouseArea {
+                    }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            appWindow.showMinimized()
+                        }
+                    }
+                }
+            }
+            Label {
+                text: "File System Watcher"
+                font.pointSize: 10
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+        }
+        Rectangle{
+            id: appBody
+            width: parent.width*0.9
+            height: 690
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.top: windowTitle.bottom
+            color: "transparent"
+            Rectangle{
+                id: rectangleFolderPath
+                color: "transparent"
+                height: 30
+                width: parent.width
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.topMargin: parent.height*0.03
+                Rectangle{
+                    id: folderPathWrap
+                    width: parent.width * 0.75
+                    height: parent.height
+                    border.color: "black"
+                    border.width: 1
+                    radius: 10
+                    color: "transparent"
+                    anchors.left: parent.left
+                    ScrollView{
+                        ScrollBar.horizontal.size: parent.width/folderPath.width
+                        ScrollBar.vertical.policy: ScrollBar.AlwaysOff
+                        ScrollBar.vertical.interactive: false
+                        width: parent.width*0.97
+                        height: parent.height*0.90
+                        anchors.centerIn: parent
+                        TextArea {
+                            id: folderPath
+                            width: parent.width
+                            height: parent.height
+                            font.pixelSize: 15
+                            Keys.onReturnPressed: {}
+                            placeholderText : "Add path to watch"
+                        }
+                    }
+                }
+                Rectangle {
+                    width: parent.width*0.2
+                    border.color: "black"
+                    border.width: 1
+                    radius: 10
+                    height: parent.height
+                    anchors.right: parent.right
+                    Label {
+                        text: "Add"
+                        font.pixelSize: 20
+                        anchors.centerIn: parent
+                        MouseArea{
                             anchors.fill: parent
                             onClicked: {
-                                appWindow.showMinimized()
+                                mPaths.appendItem(folderPath.text)
                             }
                         }
                     }
                 }
             }
-            Text {
-                text: "File System Watcher"
-                font.pointSize: 10
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
+
+            Rectangle{
+                id: rectangleWatchedPaths
+                width: parent.width
+                height:parent.height*0.25
+                anchors.top: rectangleFolderPath.bottom
+                anchors.topMargin: parent.height*0.03
+                Label{
+                    id: labelWatchedPaths
+                    text: "Watched paths"
+                    font.pointSize: 13
+                }
+                Rectangle {
+                    id:listViewWrap
+                    width:parent.width
+                    height: parent.height*0.9
+                    anchors.top: labelWatchedPaths.bottom
+                    anchors.topMargin:7
+                    ListView{
+                        id: lv
+                        height: parent.height
+                        width: parent.width
+                        clip: true
+                        anchors.fill: parent
+                        model: LVModel {
+                            list: mPaths
+                        }
+
+                        delegate: RowLayout{
+                            property int id: model.id
+                            width: listViewWrap.width
+                            height: 20
+                            Rectangle{
+                                id: path
+                                height:parent.height
+                                width:parent.width*0.797
+                                color:model.color
+                                Label{
+                                    anchors.left: parent.left
+                                    anchors.leftMargin: parent.width*0.02
+                                    text: model.path
+                                }
+                            }
+                            Rectangle{
+                                id: lvSep
+                                height:parent.height
+                                width:parent.width*0.003
+                                color: "black"
+                                anchors.left: path.right
+                            }
+                            Rectangle{
+                                anchors.left: lvSep.right
+                                height:parent.height
+                                width:parent.width*0.2
+                                color:model.color
+                                Label{
+                                    anchors.centerIn: parent
+                                    text: "Remove"
+                                }
+                                MouseArea{
+                                    anchors.fill: parent
+                                    onClicked: mPaths.removeItem(model.id)
+                                }
+                            }
+                        }
+                    }
+                }
+                Rectangle {
+                    id: lvBorder
+                    width:listViewWrap.width
+                    height:listViewWrap.height
+                    border.color: "black"
+                    border.width: 1
+                    color: "transparent"
+                    radius: 10
+                    anchors.top: listViewWrap.top
+                }
             }
         }
     }

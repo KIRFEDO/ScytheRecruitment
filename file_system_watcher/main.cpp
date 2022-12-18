@@ -6,7 +6,8 @@
 #include <QLocale>
 #include <QTranslator>
 
-#include "titlebarhandler.h"
+#include "listmodelwatchedpath.h"
+#include "listwatchedpath.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,6 +15,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
     QGuiApplication app(argc, argv);
+
+    qmlRegisterType<ListModelWatchedPath>("FolderTracker", 1, 0, "LVModel");
+    qmlRegisterType<ListWatchedPath>("FolderTracker", 1, 0, "LVwatchedPaths");
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
@@ -26,6 +30,9 @@ int main(int argc, char *argv[])
     }
 
     QQmlApplicationEngine engine;
+    ListWatchedPath mPaths;
+    engine.rootContext()->setContextProperty(QStringLiteral("mPaths"), &mPaths);
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
@@ -33,6 +40,7 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
+
 
     return app.exec();
 }
