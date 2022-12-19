@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef TABLEHANDLER_H
 #define TABLEHANDLER_H
 

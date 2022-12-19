@@ -1,17 +1,19 @@
+#pragma once
+
 #ifndef LISTMODELWATCHEDPATH_H
 #define LISTMODELWATCHEDPATH_H
 
 #include <QAbstractListModel>
 
-#include "listwatchedpath.h"
+#include "listHandler.h"
 
-class ListModelWatchedPath : public QAbstractListModel
+class ListModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(ListWatchedPath *list READ list WRITE setList)
+    Q_PROPERTY(ListHandler *list READ list WRITE setList)
 
 public:
-    explicit ListModelWatchedPath(QObject *parent = nullptr);
+    explicit ListModel(QObject *parent = nullptr);
 
     enum {
         Color,
@@ -31,11 +33,11 @@ public:
     bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
 
     QHash<int, QByteArray> roleNames() const override;
-    ListWatchedPath* list() const;
-    void setList(ListWatchedPath *list);
+    ListHandler* list() const;
+    void setList(ListHandler *list);
 
 private:
-    ListWatchedPath *mList;
+    ListHandler *mList;
 };
 
 #endif // LISTMODELWATCHEDPATH_H

@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef TABLEMODEL_H
 #define TABLEMODEL_H
 

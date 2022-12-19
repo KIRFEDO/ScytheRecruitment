@@ -1,12 +1,12 @@
-#include "listwatchedpath.h"
+#include "listHandler.h"
 #include <QDebug>
 
-ListWatchedPath::ListWatchedPath(QObject *parent)
+ListHandler::ListHandler(QObject *parent)
     : QObject{parent}
 {
 }
 
-void ListWatchedPath::appendItem(QString path){
+void ListHandler::appendItem(QString path){
     emit preItemAppended();
     QString pathModified = path.left(4)=="file" ? path.right(path.length()-8) : path;
     paths.append(*(new Item(paths.size(), pathModified, uniqueId++)));
@@ -14,7 +14,7 @@ void ListWatchedPath::appendItem(QString path){
     emit postItemAppended();
 }
 
-void ListWatchedPath::removeItem(int id){
+void ListHandler::removeItem(int id){
     emit preItemRemoved(idMap[id]);
     paths.removeAt(idMap[id]);
     for(int i=0;i<paths.size();i++){
@@ -24,6 +24,6 @@ void ListWatchedPath::removeItem(int id){
     emit postItemRemoved();
 }
 
-int ListWatchedPath::getRealPos(int id){
+int ListHandler::getRealPos(int id){
     return idMap[id];
 }

@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef LISTWATCHEDPATH_H
 #define LISTWATCHEDPATH_H
 
@@ -20,11 +22,11 @@ struct Item{
     }
 };
 
-class ListWatchedPath : public QObject
+class ListHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit ListWatchedPath(QObject *parent = nullptr);
+    explicit ListHandler(QObject *parent = nullptr);
     const QVector<Item>& getPaths() const {
         return paths;
     }

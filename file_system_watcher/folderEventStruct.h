@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef FOLDEREVENTSTRUCT_H
 #define FOLDEREVENTSTRUCT_H
 

@@ -8,9 +8,9 @@
 #include <QLocale>
 #include <QTranslator>
 
-#include "listmodelwatchedpath.h"
-#include "listwatchedpath.h"
-#include "testwatcher.h"
+#include "listModel.h"
+#include "listHandler.h"
+#include "watcher.h"
 #include "tablemodel.h"
 #include <QDateTime>
 
@@ -25,8 +25,8 @@ int main(int argc, char *argv[])
     qInfo() << "Compile Time: "<<QSslSocket::sslLibraryBuildVersionString();
 
     qmlRegisterType<TableModel>("FolderTracker", 1, 0, "TVModel");
-    qmlRegisterType<ListModelWatchedPath>("FolderTracker", 1, 0, "LVModel");
-    qmlRegisterType<ListWatchedPath>("FolderTracker", 1, 0, "LVwatchedPaths");
+    qmlRegisterType<ListModel>("FolderTracker", 1, 0, "LVModel");
+    qmlRegisterType<ListHandler>("FolderTracker", 1, 0, "LVwatchedPaths");
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
@@ -39,11 +39,11 @@ int main(int argc, char *argv[])
     }
 
     QQmlApplicationEngine engine;
-    ListWatchedPath mPaths;
+    ListHandler mPaths;
     engine.rootContext()->setContextProperty(QStringLiteral("mPaths"), &mPaths);
     TableHandler tableHandler;
     engine.rootContext()->setContextProperty(QStringLiteral("tableHandler"), &tableHandler);
-    TestWatcher folderWatcher;
+    Watcher folderWatcher;
     folderWatcher.setTableHandler(&tableHandler);
     folderWatcher.setItemsPtr(mPaths.getPathsPtr());
     engine.rootContext()->setContextProperty(QStringLiteral("folderWatcher"), &folderWatcher);

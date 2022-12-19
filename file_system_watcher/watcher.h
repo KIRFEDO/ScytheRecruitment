@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef TESTWATCHER_H
 #define TESTWATCHER_H
 
@@ -6,21 +8,21 @@
 #include <QFileInfoList>
 
 #include "catgenerator.h"
-#include "listwatchedpath.h"
+#include "listHandler.h"
 #include "tablehandler.h"
 
-class TestWatcher : public QObject
+class Watcher : public QObject
 {
     Q_OBJECT
 public:
-    explicit TestWatcher(QObject *parent = nullptr);
+    explicit Watcher(QObject *parent = nullptr);
     void setItemsPtr(QVector<Item>* mPaths){
         this->mPaths=mPaths;
     }
     void setTableHandler(TableHandler* ptr){
         this->mtableHandler=ptr;
     }
-    ~TestWatcher(){
+    ~Watcher(){
         gen.wait();
     }
 signals:

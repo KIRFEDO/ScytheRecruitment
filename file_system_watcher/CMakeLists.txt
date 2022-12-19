@@ -16,18 +16,18 @@ set(TS_FILES file_system_watcher_en_150.ts)
 
 set(PROJECT_SOURCES
         main.cpp
-        listwatchedpath.cpp
-        listwatchedpath.h
-        listmodelwatchedpath.cpp
-        listmodelwatchedpath.h
-        testwatcher.cpp
-        testwatcher.h
-        catgenerator.cpp
-        catgenerator.h
-        tablemodel.cpp
-        tablemodel.h
-        tablehandler.cpp
-        tablehandler.h
+        listHandler.cpp
+        listHandler.h
+        listModel.cpp
+        listModel.h
+        watcher.cpp
+        watcher.h
+        catGenerator.cpp
+        catGenerator.h
+        tableModel.cpp
+        tableModel.h
+        tableHandler.cpp
+        tableHandler.h
         folderEventStruct.h
         qml.qrc
         ${TS_FILES}

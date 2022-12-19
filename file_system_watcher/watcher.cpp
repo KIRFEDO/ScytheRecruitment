@@ -1,4 +1,4 @@
-#include "testwatcher.h"
+#include "watcher.h"
 #include <QDebug>
 #include <QDir>
 #include <QDirIterator>
@@ -7,12 +7,12 @@
 
 #include "catgenerator.h"
 
-TestWatcher::TestWatcher(QObject *parent)
+Watcher::Watcher(QObject *parent)
     : QObject{parent}
 {
 }
 
-void TestWatcher::startMonitoring(){
+void Watcher::startMonitoring(){
     generateAllPaths();
     folderWatcher = new QFileSystemWatcher(this);
     fileWatcher = new QFileSystemWatcher(this);
@@ -34,12 +34,12 @@ void TestWatcher::startMonitoring(){
     connect(fileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileEvent(QString)));
 }
 
-void TestWatcher::stopMonitoring(){
+void Watcher::stopMonitoring(){
     disconnect(folderWatcher, SIGNAL(directoryChanged(QString)), this, SLOT(folderEvent(QString)));
     disconnect(fileWatcher, SIGNAL(fileChanged(QString)), this, SLOT(fileEvent(QString)));
 }
 
-void TestWatcher::folderEvent(const QString& path){
+void Watcher::folderEvent(const QString& path){
     QDir dir(path);
     qint64 qiTimestamp=QDateTime::currentMSecsSinceEpoch();
     QDateTime dt;
@@ -77,7 +77,7 @@ void TestWatcher::folderEvent(const QString& path){
     }
 }
 
-void TestWatcher::fileEvent(const QString& path){
+void Watcher::fileEvent(const QString& path){
     qint64 qiTimestamp=QDateTime::currentMSecsSinceEpoch();
     QDateTime dt;
     auto timestamp = dt.currentDateTime().toString("dd.MM.yyyy hh:mm");
@@ -86,7 +86,7 @@ void TestWatcher::fileEvent(const QString& path){
     );
 }
 
-void TestWatcher::generateAllPaths(){
+void Watcher::generateAllPaths(){
     auto& paths = *mPaths;
     folderPaths.clear();
     filePaths.clear();
@@ -96,7 +96,7 @@ void TestWatcher::generateAllPaths(){
     }
 }
 
-void TestWatcher::generateFilePaths(QString path) {
+void Watcher::generateFilePaths(QString path) {
     QDir dir(path);
     QDirIterator fileIt(path, QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
     while(fileIt.hasNext()){
@@ -105,7 +105,7 @@ void TestWatcher::generateFilePaths(QString path) {
     };
 }
 
-void TestWatcher::addFolder(QString path) {
+void Watcher::addFolder(QString path) {
     folderPaths.append(path);
     QDir dir(path);
     QDirIterator fileIt(path, QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);

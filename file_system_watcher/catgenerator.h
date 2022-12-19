@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef CATGENERATOR_H
 #define CATGENERATOR_H
 
