@@ -4,6 +4,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.2
 import QtQuick.Dialogs
 import Qt.labs.platform
+import Qt.labs.qmlmodels 1.0
 import FolderTracker 1.0
 
 Window {
@@ -180,13 +181,13 @@ Window {
                     radius: 10
                     color: "transparent"
                     anchors.left: parent.left
-                    ScrollView{
-                        ScrollBar.horizontal.size: parent.width/folderPath.width
-                        ScrollBar.vertical.policy: ScrollBar.AlwaysOff
-                        ScrollBar.vertical.interactive: false
-                        width: parent.width*0.97
-                        height: parent.height*0.90
-                        anchors.centerIn: parent
+//                    ScrollView{
+//                        ScrollBar.horizontal.size: parent.width/folderPath.width
+//                        ScrollBar.vertical.policy: ScrollBar.AlwaysOff
+//                        ScrollBar.vertical.interactive: false
+//                        width: parent.width*0.97
+//                        height: parent.height*0.90
+//                        anchors.centerIn: parent
                         TextArea {
                             id: folderPath
                             width: parent.width
@@ -195,7 +196,7 @@ Window {
                             Keys.onReturnPressed: {}
                             placeholderText : "Add path to watch"
                         }
-                    }
+//                    }
                 }
                 Rectangle {
                     width: parent.width*0.2
@@ -247,30 +248,23 @@ Window {
                         model: LVModel {
                             list: mPaths
                         }
-
                         delegate: RowLayout{
                             width: listViewWrap.width
                             height: 20
                             Rectangle{
-                                id: path
+                                id: lvPath
                                 height:parent.height
-                                width:parent.width*0.797
+                                width:parent.width*0.78
+                                anchors.left: parent.left
+                                anchors.leftMargin: parent.width*0.02
                                 color:model.color
                                 Label{
                                     anchors.left: parent.left
-                                    anchors.leftMargin: parent.width*0.02
                                     text: model.path
                                 }
                             }
                             Rectangle{
-                                id: lvSep
-                                height:parent.height
-                                width:parent.width*0.003
-                                color: "black"
-                                anchors.left: path.right
-                            }
-                            Rectangle{
-                                anchors.left: lvSep.right
+                                anchors.left: lvPath.right
                                 height:parent.height
                                 width:parent.width*0.2
                                 color:model.color
@@ -280,7 +274,9 @@ Window {
                                 }
                                 MouseArea{
                                     anchors.fill: parent
-                                    onClicked: mPaths.removeItem(model.id)
+                                    onClicked: {
+                                        mPaths.removeItem(model.id)
+                                    }
                                 }
                             }
                         }
@@ -296,14 +292,65 @@ Window {
                     radius: 10
                     anchors.top: listViewWrap.top
                 }
+                Rectangle {
+                    id: lvBorderInternal
+                    width: parent.width*0.002
+                    height: listViewWrap.height
+                    color: "black"
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.width*0.8
+                    anchors.top: listViewWrap.top
+                }
             }
+            Rectangle {
+                id:tableViewWrap
+                width: parent.width
+                height: parent.height*0.35
+                color:"transparent"
+                border.color: "black"
+                border.width: 1
+                radius: 10
+                anchors.top:rectangleWatchedPaths.bottom
+                anchors.topMargin: 50
+                TableView {
+                    columnSpacing: 1
+                    rowSpacing: 1
+                    width: parent.width*0.99
+                    height: parent.height*0.99
+                    anchors.centerIn: parent
+                    anchors.fill: parent
+                    clip: true
+                    model: TVModel {
+                        handler: tableHandler
+                    }
+                    delegate: Rectangle {
+                        implicitWidth: tableViewWrap.width*model.size
+                        implicitHeight: 50
+                        color: model.color
+                        Label {
+                            font.pixelSize: 10
+                            text: model.value
+                            anchors.centerIn: parent
+                       }
+                    }
+                }
+                Rectangle {
+                    id: tvBorder
+                    border.color: "black"
+                    border.width: 1
+                    color: "transparent"
+                    radius: 10
+                    anchors.fill: parent
+                }
+            }
+
             Rectangle {
                 id: controlButtons
                 width: parent.width
                 height: 30
                 color:"transparent"
-                anchors.top:rectangleWatchedPaths.bottom
-                anchors.topMargin: 40
+                anchors.top:tableViewWrap.bottom
+                anchors.topMargin: 15
                 Rectangle{
                     id: btnClear
                     width: 100
@@ -319,6 +366,9 @@ Window {
                     }
                     MouseArea{
                         anchors.fill: parent
+                        onClicked: {
+                            tableHandler.initTable()
+                        }
                     }
                 }
                 Rectangle{

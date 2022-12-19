@@ -24,6 +24,11 @@ set(PROJECT_SOURCES
         testwatcher.h
         catgenerator.cpp
         catgenerator.h
+        tablemodel.cpp
+        tablemodel.h
+        tablehandler.cpp
+        tablehandler.h
+        folderEventStruct.h
         qml.qrc
         ${TS_FILES}
 )

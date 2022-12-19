@@ -2,6 +2,8 @@
 #include <QDebug>
 #include <QDir>
 #include <QDirIterator>
+#include <QDateTime>
+#include <QThread>
 
 #include "catgenerator.h"
 
@@ -15,6 +17,7 @@ void TestWatcher::startMonitoring(){
     folderWatcher = new QFileSystemWatcher(this);
     fileWatcher = new QFileSystemWatcher(this);
     for(const auto path : folderPaths){
+        qDebug()<<path;
         folderWatcher->addPath(path);
     }
     for(const auto path : filePaths){
@@ -38,13 +41,20 @@ void TestWatcher::stopMonitoring(){
 
 void TestWatcher::folderEvent(const QString& path){
     QDir dir(path);
+    qint64 qiTimestamp=QDateTime::currentMSecsSinceEpoch();
+    QDateTime dt;
+    auto timestamp = dt.currentDateTime().toString("dd.MM.yyyy hh:mm");
     dir.setFilter(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot);
     auto oldFolderList = dir.entryInfoList();
     std::swap(currFolderList[path], oldFolderList);
     if(currFolderList[path].size() > oldFolderList.size()){
         for(auto fileInfo: currFolderList[path]){
             if(!oldFolderList.contains(fileInfo)){
-                qDebug()<<"new | "<<fileInfo.absoluteFilePath();
+                if(fileInfo.isFile())fileWatcher->addPath(fileInfo.absoluteFilePath());
+                folderWatcher->addPath(fileInfo.absoluteFilePath());
+                mtableHandler->appendRow(
+                    *(new FolderEventStruct("Created", fileInfo.absoluteFilePath(), timestamp, fileInfo.isDir()))
+                );
                 break;
             }
         }
@@ -52,7 +62,11 @@ void TestWatcher::folderEvent(const QString& path){
     else if(currFolderList[path].size() < oldFolderList.size()){
         for(auto fileInfo: oldFolderList){
             if(!currFolderList[path].contains(fileInfo)){
-                qDebug()<<"delete | "<<fileInfo.absoluteFilePath();
+                if(fileInfo.isFile())fileWatcher->removePath(fileInfo.absoluteFilePath());
+                folderWatcher->removePath(fileInfo.absoluteFilePath());
+                mtableHandler->appendRow(
+                    *(new FolderEventStruct("Removed", fileInfo.absoluteFilePath(), timestamp, fileInfo.isDir()))
+                );
                 if(fileInfo.isFile()){
                     gen.getCat(fileInfo);
                 }
@@ -64,9 +78,12 @@ void TestWatcher::folderEvent(const QString& path){
 }
 
 void TestWatcher::fileEvent(const QString& path){
-    if(QFile::exists(path)){
-        qDebug()<<"edit | "<<path;
-    }
+    qint64 qiTimestamp=QDateTime::currentMSecsSinceEpoch();
+    QDateTime dt;
+    auto timestamp = dt.currentDateTime().toString("dd.MM.yyyy hh:mm");
+    mtableHandler->appendRow(
+        *(new FolderEventStruct("Edited", path, timestamp, false))
+    );
 }
 
 void TestWatcher::generateAllPaths(){
@@ -74,8 +91,8 @@ void TestWatcher::generateAllPaths(){
     folderPaths.clear();
     filePaths.clear();
     for(auto path : paths){
-        qDebug()<<path.path;
         addFolder(path.path);
+        generateFilePaths(path.path);
     }
 }
 
@@ -91,10 +108,9 @@ void TestWatcher::generateFilePaths(QString path) {
 void TestWatcher::addFolder(QString path) {
     folderPaths.append(path);
     QDir dir(path);
-    auto infoList = dir.entryInfoList();
-    for(auto fileInfo : infoList){
-        folderPaths.append(fileInfo.absoluteFilePath());
-    }
-
-    generateFilePaths(path);
+    QDirIterator fileIt(path, QDir::Dirs | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+    while(fileIt.hasNext()){
+        dir = fileIt.next();
+        folderPaths.append(dir.path());
+    };
 }

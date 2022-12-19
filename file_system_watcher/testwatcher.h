@@ -7,6 +7,7 @@
 
 #include "catgenerator.h"
 #include "listwatchedpath.h"
+#include "tablehandler.h"
 
 class TestWatcher : public QObject
 {
@@ -16,6 +17,10 @@ public:
     void setItemsPtr(QVector<Item>* mPaths){
         this->mPaths=mPaths;
     }
+    void setTableHandler(TableHandler* ptr){
+        this->mtableHandler=ptr;
+    }
+
 signals:
 
 public slots:
@@ -25,6 +30,7 @@ public slots:
 private slots:
     void folderEvent(const QString&);
     void fileEvent(const QString&);
+
 private:
     QVector<Item>* mPaths = nullptr;
     QFileSystemWatcher* folderWatcher;
@@ -33,6 +39,7 @@ private:
     QVector<QString> folderPaths;
     QVector<QString> filePaths;
     CatGenerator gen;
+    TableHandler* mtableHandler;
 
     void generateAllPaths();
     void generateFilePaths(QString path);

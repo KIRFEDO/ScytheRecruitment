@@ -10,11 +10,11 @@ struct Item{
     QString path;
     int id;
     void updateItem(size_t currentSize, int id){
-        this->color = currentSize % 2 == 0 ? "white" : "grey";
+        this->color = currentSize % 2 == 0 ? "white" : "#D3D3D3";
         this->id=id;
     }
     Item(size_t currentSize, QString path, int id){
-        this->color = currentSize % 2 == 0 ? "white" : "grey";
+        this->color = currentSize % 2 == 0 ? "white" : "#D3D3D3";
         this->path = path;
         this->id=id;
     }

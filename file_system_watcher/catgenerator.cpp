@@ -12,16 +12,15 @@ void CatGenerator::getCat(QFileInfo fInfo){
     fileInfo = fInfo;
     nam = new QNetworkAccessManager(this);
     QNetworkProxyFactory::setUseSystemConfiguration(true);
-    qDebug()<<connect(nam, &QNetworkAccessManager::finished, this, &CatGenerator::downloadFinished);
+    connect(nam, &QNetworkAccessManager::finished, this, &CatGenerator::downloadFinished);
     nam->get(QNetworkRequest(QUrl("http://cataas.com/cat/says/hello%20world!")));
-    qDebug()<<"Manager log";
 }
 
 void CatGenerator::downloadFinished(QNetworkReply *reply){
     QPixmap pm;
     pm.loadFromData(reply->readAll());
     QString catPath = fileInfo.absoluteFilePath();
-    catPath = catPath.left(catPath.length()-fileInfo.suffix().length());
+    catPath = catPath.left(catPath.length()-(fileInfo.suffix().length()+1));
     catPath+=".png";
     QFile file(catPath);
     file.open(QIODevice::WriteOnly);

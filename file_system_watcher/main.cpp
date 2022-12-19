@@ -11,7 +11,8 @@
 #include "listmodelwatchedpath.h"
 #include "listwatchedpath.h"
 #include "testwatcher.h"
-#include "catgenerator.h"
+#include "tablemodel.h"
+#include <QDateTime>
 
 int main(int argc, char *argv[])
 {
@@ -23,6 +24,7 @@ int main(int argc, char *argv[])
     qInfo() << "SSL Support: "<<QSslSocket::supportsSsl();
     qInfo() << "Compile Time: "<<QSslSocket::sslLibraryBuildVersionString();
 
+    qmlRegisterType<TableModel>("FolderTracker", 1, 0, "TVModel");
     qmlRegisterType<ListModelWatchedPath>("FolderTracker", 1, 0, "LVModel");
     qmlRegisterType<ListWatchedPath>("FolderTracker", 1, 0, "LVwatchedPaths");
 
@@ -39,7 +41,10 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     ListWatchedPath mPaths;
     engine.rootContext()->setContextProperty(QStringLiteral("mPaths"), &mPaths);
+    TableHandler tableHandler;
+    engine.rootContext()->setContextProperty(QStringLiteral("tableHandler"), &tableHandler);
     TestWatcher folderWatcher;
+    folderWatcher.setTableHandler(&tableHandler);
     folderWatcher.setItemsPtr(mPaths.getPathsPtr());
     engine.rootContext()->setContextProperty(QStringLiteral("folderWatcher"), &folderWatcher);
 
