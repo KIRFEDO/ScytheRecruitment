@@ -20,7 +20,9 @@ public:
     void setTableHandler(TableHandler* ptr){
         this->mtableHandler=ptr;
     }
-
+    ~TestWatcher(){
+        gen.wait();
+    }
 signals:
 
 public slots:

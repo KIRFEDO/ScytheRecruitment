@@ -3,17 +3,13 @@
 #include <QPixmap>
 #include <QNetworkProxyFactory>
 
-CatGenerator::CatGenerator(QObject *parent)
-    : QObject{parent}
-{
-}
-
 void CatGenerator::getCat(QFileInfo fInfo){
     fileInfo = fInfo;
     nam = new QNetworkAccessManager(this);
     QNetworkProxyFactory::setUseSystemConfiguration(true);
     connect(nam, &QNetworkAccessManager::finished, this, &CatGenerator::downloadFinished);
     nam->get(QNetworkRequest(QUrl("http://cataas.com/cat/says/hello%20world!")));
+    lock.lockForRead();
 }
 
 void CatGenerator::downloadFinished(QNetworkReply *reply){
@@ -26,8 +22,5 @@ void CatGenerator::downloadFinished(QNetworkReply *reply){
     file.open(QIODevice::WriteOnly);
     pm.save(&file, "PNG");
     file.close();
-}
-
-void CatGenerator::sslErros(QNetworkReply *reply, const QList<QSslError> &errors){
-    qDebug()<<"sslError";
+    lock.unlock();
 }

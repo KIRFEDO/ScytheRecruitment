@@ -19,6 +19,7 @@ void ListWatchedPath::removeItem(int id){
     paths.removeAt(idMap[id]);
     for(int i=0;i<paths.size();i++){
         idMap[paths[i].id]=i;
+        paths[i].color = i % 2 == 0 ? "white" : "#D3D3D3";
     }
     emit postItemRemoved();
 }

@@ -158,7 +158,7 @@ Window {
         }
         Rectangle{
             id: appBody
-            width: parent.width*0.9
+            width: 630
             height: 690
             anchors.left: parent.left
             anchors.leftMargin: 20
@@ -176,27 +176,23 @@ Window {
                     id: folderPathWrap
                     width: parent.width * 0.75
                     height: parent.height
-                    border.color: "black"
-                    border.width: 1
-                    radius: 10
                     color: "transparent"
                     anchors.left: parent.left
-//                    ScrollView{
-//                        ScrollBar.horizontal.size: parent.width/folderPath.width
-//                        ScrollBar.vertical.policy: ScrollBar.AlwaysOff
-//                        ScrollBar.vertical.interactive: false
-//                        width: parent.width*0.97
-//                        height: parent.height*0.90
-//                        anchors.centerIn: parent
-                        TextArea {
-                            id: folderPath
-                            width: parent.width
-                            height: parent.height
-                            font.pixelSize: 15
-                            Keys.onReturnPressed: {}
-                            placeholderText : "Add path to watch"
-                        }
-//                    }
+                    TextArea {
+                        id: folderPath
+                        width: parent.width
+                        height: parent.height
+                        font.pixelSize: 15
+                        Keys.onReturnPressed: {}
+                        placeholderText : "Add path to watch"
+                    }
+                    Rectangle{
+                        color: "transparent"
+                        border.color: "black"
+                        border.width: 1
+                        radius: 10
+                        anchors.fill: parent
+                    }
                 }
                 Rectangle {
                     width: parent.width*0.2
@@ -241,6 +237,7 @@ Window {
                     anchors.topMargin:7
                     ListView{
                         id: lv
+                        boundsBehavior: Flickable.DragOverBounds
                         height: parent.height
                         width: parent.width
                         clip: true
@@ -254,11 +251,11 @@ Window {
                             Rectangle{
                                 id: lvPath
                                 height:parent.height
-                                width:parent.width*0.78
+                                width:parent.width*0.8
                                 anchors.left: parent.left
-                                anchors.leftMargin: parent.width*0.02
                                 color:model.color
                                 Label{
+                                    anchors.leftMargin: 5
                                     anchors.left: parent.left
                                     text: model.path
                                 }
@@ -313,7 +310,8 @@ Window {
                 anchors.top:rectangleWatchedPaths.bottom
                 anchors.topMargin: 50
                 TableView {
-                    columnSpacing: 1
+                    boundsBehavior: Flickable.StopAtBounds
+                    columnSpacing: 0
                     rowSpacing: 1
                     width: parent.width*0.99
                     height: parent.height*0.99
@@ -335,12 +333,32 @@ Window {
                     }
                 }
                 Rectangle {
-                    id: tvBorder
+                    color:"transparent"
                     border.color: "black"
                     border.width: 1
-                    color: "transparent"
                     radius: 10
                     anchors.fill: parent
+                }
+                Rectangle {
+                    color:"black"
+                    width: 1
+                    height: parent.height
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.width*0.2
+                }
+                Rectangle {
+                    color:"black"
+                    width: 1
+                    height: parent.height
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.width*0.6+1
+                }
+                Rectangle {
+                    color:"black"
+                    width: 1
+                    height: parent.height
+                    anchors.left: parent.left
+                    anchors.leftMargin: parent.width*0.7+2
                 }
             }
 
@@ -359,7 +377,7 @@ Window {
                     border.width: 1
                     border.color: "black"
                     radius: 10
-                    Label{
+                    Text{
                         anchors.centerIn: parent
                         text: "Clear"
                         font.pixelSize: 20

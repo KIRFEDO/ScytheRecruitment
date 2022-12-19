@@ -1,31 +1,37 @@
 #ifndef CATGENERATOR_H
 #define CATGENERATOR_H
 
-#include <QObject>
+#include <QThread>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include <QSslSocket>
 #include <QList>
 #include <QFileInfo>
+#include <QReadWriteLock>
 
-class CatGenerator : public QObject
+class CatGenerator : public QThread
 {
     Q_OBJECT
 public:
-    explicit CatGenerator(QObject *parent = nullptr);
+    CatGenerator(QObject *parent = nullptr) : QThread(parent)
+    {
+    };
 
-signals:
+    void run() override {
+       getCat(fileInfo);
+       lock.lockForRead();
+       lock.unlock();
+    }
 
-public slots:
 private slots:
     void downloadFinished(QNetworkReply *reply);
-    void sslErros(QNetworkReply *reply, const QList<QSslError> &errors);
 
 public:
     void getCat(QFileInfo path);
 private:
     QFileInfo fileInfo;
     QNetworkAccessManager *nam;
+    QReadWriteLock lock;
 };
 
 #endif // CATGENERATOR_H

@@ -90,7 +90,9 @@ void ListModelWatchedPath::setList(ListWatchedPath *list){
             beginRemoveRows(QModelIndex(), index, index);
         });
         connect(mList, &ListWatchedPath::postItemRemoved, this, [=]() {
+            beginResetModel();
             endRemoveRows();
+            endResetModel();
         });
     }
 

@@ -3,7 +3,7 @@
 #include <QDir>
 #include <QDirIterator>
 #include <QDateTime>
-#include <QThread>
+#include <QtConcurrent>
 
 #include "catgenerator.h"
 
